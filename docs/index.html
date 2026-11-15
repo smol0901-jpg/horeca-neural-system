@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Horeca Neural System — Демо ХАССП + AI</title>
+<meta name="description" content="Horeca Neural System — цифровой ХАССП и операционное управление для ресторанов, кафе и столовых. СанПиН 2.3/2.4.4282-26, датчики, журналы, AI. https://smol0901-jpg.github.io/horeca-neural-system/">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0f172a;--panel:#1e293b;--text:#f8fafc;--muted:#94a3b8;--accent:#2dd4bf;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--border:#334155}
@@ -13,7 +14,7 @@ body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--tex
 .logo{font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px}
 .badge{background:var(--accent);color:#0f172a;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px}
 .layout{display:flex;flex:1;overflow:hidden}
-.sidebar{width:220px;background:var(--panel);border-right:1px solid var(--border);padding:8px;flex-shrink:0;overflow-y:auto}
+.sidebar{width:220px;background:var(--panel);border-right:1px solid var(--border);padding:8px;flex-shrink:0;overflow-y:auto;display:flex;flex-direction:column}
 .nav{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:6px;color:var(--muted);font-size:13.5px;font-weight:500;cursor:pointer;margin-bottom:2px}
 .nav:hover{background:#334155;color:var(--text)}
 .nav.active{background:rgba(45,212,191,.12);color:var(--accent)}
@@ -50,12 +51,15 @@ input{background:var(--bg);border:1px solid var(--border);border-radius:6px;padd
 input:focus{border-color:var(--accent)}
 .btn{background:var(--accent);color:#0f172a;border:none;border-radius:6px;padding:8px 14px;font-weight:500;cursor:pointer;font-size:13px;font:inherit}
 .btn:hover{filter:brightness(1.1)}
-@media(max-width:768px){.sidebar{display:none}.grid-4,.grid-3,.grid-2{grid-template-columns:1fr}}
+.contact-bar{background:var(--panel);border-top:1px solid var(--border);padding:8px 16px;font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;flex-shrink:0}
+.contact-bar strong{color:var(--text)}
+.contact-bar a{color:var(--accent)}
+@media(max-width:768px){.sidebar{display:none}.grid-4,.grid-3,.grid-2{grid-template-columns:1fr}.contact-bar{font-size:11px}}
 </style>
 </head>
 <body>
 <div class="header">
-  <div class="logo">⬡ Horeca Neural <span class="badge">DEMO v0.1</span></div>
+  <div class="logo">⬡ Horeca Neural <span class="badge">DEMO v0.2</span></div>
   <div style="display:flex;align-items:center;gap:12px">
     <div class="toggle" id="dbToggle">
       <button class="active" data-mode="local">SQLite</button>
@@ -80,18 +84,23 @@ input:focus{border-color:var(--accent)}
   </div>
   <div class="main" id="content"></div>
 </div>
+<div class="contact-bar">
+  <span><strong>Horeca Neural System</strong> · цифровой ХАССП для ресторанов, кафе, столовых</span>
+  <span>Сайт: <a href="https://smol0901-jpg.github.io/horeca-neural-system/" target="_blank" rel="noopener">smol0901-jpg.github.io/horeca-neural-system</a></span>
+  <span>Email / Telegram: <strong>ASV_PROD</strong></span>
+</div>
 <script>
 const sensors=[{name:'Холодильник №1 (мясо)',loc:'Цех холодный',val:2.1,unit:'°C',min:-2,max:4,st:'ok'},{name:'Холодильник №2 (молочка)',loc:'Цех холодный',val:5.8,unit:'°C',min:0,max:6,st:'warn'},{name:'Морозильник',loc:'Склад',val:-18.4,unit:'°C',min:-22,max:-15,st:'ok'},{name:'Кухня (влажность)',loc:'Горячий цех',val:62,unit:'%',min:40,max:70,st:'ok'},{name:'Дверь хол. №1',loc:'Цех холодный',val:0,unit:'сек',min:0,max:120,st:'ok'},{name:'Горячий цех (воздух)',loc:'Горячий цех',val:28.5,unit:'°C',min:16,max:26,st:'crit'}];
 const journals=[{t:'12:40',type:'temperature',author:'Иванова А.С.',data:'Хол.№1 = 2.1°C',ok:true},{t:'12:15',type:'brakerazh',author:'Петров В.И.',data:'Борщ — разрешено',ok:true},{t:'11:50',type:'hygiene',author:'Иванова А.С.',data:'8 чел., форма OK',ok:true}];
 const ccps=[{name:'Приёмка сырья',step:'Приёмка',hazard:'Микробы, просрочка',limit:'≤+4°C, документы',mon:'Термометр при поставке',corr:'Отказ/возврат',st:'ok'},{name:'Хранение охлаждённого',step:'Хранение',hazard:'Рост микроорганизмов',limit:'0…+4°C',mon:'Датчики + журнал 2р/смену',corr:'Перемещение/списание',st:'ok'},{name:'Термическая обработка',step:'Готовка',hazard:'Недостаточная термообработка',limit:'≥+75°C (мясо)',mon:'Штырь-термометр',corr:'Доготовка',st:'not'},{name:'Хранение готовых блюд',step:'Готовая продукция',hazard:'Вторичное загрязнение',limit:'≤+4 или ≥+60°C',mon:'Каждые 2ч',corr:'Списание',st:'ok'}];
 const inv=[{name:'Куриное филе охл.',cat:'Мясо',qty:'12.5 кг',batch:'P-88421',loc:'Хол.№1',exp:'17.11',days:2},{name:'Сливки 33%',cat:'Молочка',qty:'8 л',batch:'M-33102',loc:'Хол.№2',exp:'20.11',days:5},{name:'Лосось с/м',cat:'Рыба',qty:'6 кг',batch:'F-11990',loc:'Морозил.',exp:'01.12',days:16},{name:'Салат айсберг',cat:'Овощи',qty:'4 кг',batch:'V-4412',loc:'Хол.№2',exp:'15.11',days:0}];
 let dbMode='local';
-let messages=[{role:'bot',text:'Здравствуйте. Я нейросетевой ассистент Horeca Neural v0.1. Могу помочь с анализом рисков по ХАССП, проверкой журналов, прогнозом просрочки, рекомендациями по СанПиН 2.3/2.4.4282-26. Чем помочь?'}];
+let messages=[{role:'bot',text:'Здравствуйте. Я нейросетевой ассистент Horeca Neural System. Могу помочь с анализом рисков по ХАССП, проверкой журналов, прогнозом просрочки, рекомендациями по СанПиН 2.3/2.4.4282-26. Чем помочь?'}];
 function tag(st){return st==='ok'?'ok':st==='warn'?'warn':'crit'}
 function render(tab){
   const c=document.getElementById('content');
   if(tab==='dash'){
-    c.innerHTML=`<h1>Панель управления</h1><p class="sub">Режим БД: <b style="color:var(--accent)">${dbMode==='local'?'SQLite (локально)':'PostgreSQL (облако)'}</b> · Демонстрация возможностей</p>
+    c.innerHTML=`<h1>Панель управления</h1><p class="sub">Режим БД: <b style="color:var(--accent)">${dbMode==='local'?'SQLite (локально)':'PostgreSQL (облако)'}</b> · Horeca Neural System</p>
     <div class="grid grid-4">
       <div class="card"><div class="stat" style="color:var(--success)">87%</div><div class="label">Соответствие СанПиН/ХАССП</div></div>
       <div class="card"><div class="stat">4/6</div><div class="label">Датчики в норме</div></div>
@@ -160,7 +169,7 @@ function render(tab){
       <li>Маркировка заготовок с датой/временем</li>
     </ul></div>`;
   } else if(tab==='ai'){
-    c.innerHTML=`<h1>Нейросетевой ассистент</h1><p class="sub">v0.1 — экспертная система + контекст датчиков/журналов/ККТ. Будет улучшаться ежедневно.</p>
+    c.innerHTML=`<h1>Нейросетевой ассистент</h1><p class="sub">Horeca Neural System · экспертная система + контекст датчиков/журналов/ККТ.</p>
     <div class="card"><div class="ai-box" id="aiBox">${messages.map(m=>`<div class="msg ${m.role}">${m.text}</div>`).join('')}</div>
     <div class="input-row"><input id="aiIn" placeholder="Спросите про температуры, СанПиН, сроки, ККТ..." onkeydown="if(event.key==='Enter')sendAi()">
     <button class="btn" onclick="sendAi()">Отправить</button></div></div>`;

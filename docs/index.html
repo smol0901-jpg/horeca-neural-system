@@ -1,243 +1,637 @@
 <!DOCTYPE html>
-<html lang="ru"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Horeca Neural System</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0c0f14;--panel:#141a22;--p2:#1a222d;--line:#2a3441;--t:#e8edf4;--m:#8b98a8;--d:#5c6b7a;--a:#3d8bfd;--ad:rgba(61,139,253,.12);--ok:#2f9e6b;--okb:rgba(47,158,107,.12);--w:#c4922a;--wb:rgba(196,146,42,.12);--b:#c44b4b;--bb:rgba(196,75,75,.12);--r:6px;--f:'IBM Plex Sans',system-ui,sans-serif;--mo:'IBM Plex Mono',monospace}
-*{box-sizing:border-box;margin:0;padding:0}body{font-family:var(--f);background:var(--bg);color:var(--t);height:100vh;display:flex;flex-direction:column;overflow:hidden;font-size:13px;line-height:1.45}
-button,input,select{font:inherit;color:inherit}button{cursor:pointer;border:none;background:none}a{color:var(--a)}
-.top{height:46px;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 12px}
-.brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px}
-.bm{width:20px;height:20px;border-radius:4px;background:linear-gradient(145deg,#3d8bfd,#1a5bb8);display:grid;place-items:center}
-.badge{font-size:10px;padding:2px 5px;border-radius:3px;background:var(--p2);color:var(--m);border:1px solid var(--line)}
-.layout{display:flex;flex:1;overflow:hidden}
-.side{width:200px;background:var(--panel);border-right:1px solid var(--line);padding:6px;overflow-y:auto;display:flex;flex-direction:column}
-.ng{font-size:10px;color:var(--d);text-transform:uppercase;letter-spacing:.04em;padding:8px 8px 3px}
-.nav{padding:7px 10px;border-radius:var(--r);color:var(--m);font-size:12.5px;font-weight:500;cursor:pointer;margin-bottom:1px}
-.nav:hover{background:var(--p2);color:var(--t)}.nav.on{background:var(--ad);color:var(--a)}
-.main{flex:1;overflow:auto;padding:14px 16px}
-.foot{background:var(--panel);border-top:1px solid var(--line);padding:6px 12px;font-size:11px;color:var(--d);display:flex;flex-wrap:wrap;gap:8px 14px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin-bottom:10px}
-.grid{display:grid;gap:8px}.g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr 1fr}
-.h1{font-size:16px;font-weight:600}.sub{color:var(--m);font-size:12px;margin:4px 0 12px}
-.kpi{font-size:20px;font-weight:600}.lbl{font-size:10px;color:var(--d);margin-top:2px;text-transform:uppercase}
-.tag{display:inline-flex;padding:1px 6px;border-radius:3px;font-size:10.5px;font-weight:600}
-.t-ok{background:var(--okb);color:var(--ok)}.t-warn{background:var(--wb);color:var(--w)}.t-bad{background:var(--bb);color:var(--b)}.t-info{background:var(--ad);color:var(--a)}
-table{width:100%;border-collapse:collapse;font-size:12px}th{text-align:left;padding:6px;color:var(--d);font-weight:500;border-bottom:1px solid var(--line);font-size:10px;text-transform:uppercase}td{padding:6px;border-bottom:1px solid rgba(42,52,65,.5)}
-.btn{padding:6px 11px;border-radius:var(--r);font-size:12px;font-weight:500}.btn-p{background:var(--a);color:#fff}.btn-g{background:var(--p2);border:1px solid var(--line);color:var(--m)}.btn-sm{padding:4px 8px;font-size:11px}
-.field{display:flex;flex-direction:column;gap:3px;margin-bottom:8px}.field label{font-size:10px;color:var(--d);text-transform:uppercase}
-.field input,.field select{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:6px 8px;width:100%}
-.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.sensor{padding:10px;border:1px solid var(--line);border-radius:var(--r)}.sensor.bad{border-color:var(--b)}.sensor.warn{border-color:var(--w)}.sval{font-size:18px;font-weight:600;font-family:var(--mo)}
-.toggle{display:inline-flex;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:2px}.toggle button{padding:3px 8px;border-radius:4px;font-size:11px;color:var(--d)}.toggle button.on{background:var(--a);color:#fff}
-.lp{background:#fff;color:#111;padding:8px 10px;border-radius:4px;font-size:11px;max-width:260px;border:1px solid #ccc;font-family:var(--mo)}.lp .ln{display:flex;justify-content:space-between}.lp .t{font-weight:700;margin-bottom:3px}
-.ai{max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-bottom:8px}.msg{max-width:90%;padding:7px 10px;border-radius:var(--r);font-size:12.5px;white-space:pre-wrap}.msg.user{align-self:flex-end;background:var(--ad)}.msg.bot{align-self:flex-start;background:var(--p2);border:1px solid var(--line)}
-.ir{display:flex;gap:6px}.ir input{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:7px}
-.flow{min-height:80px;background:var(--bg);border:1px dashed var(--line);border-radius:var(--r);padding:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.fn{background:var(--p2);border:1px solid var(--line);border-radius:var(--r);padding:6px 10px;font-size:12px;position:relative}.fn .x{position:absolute;top:0;right:4px;color:var(--d);cursor:pointer;font-size:11px}
-.out{font-family:var(--mo);font-size:12px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:8px;line-height:1.5}
-.ban{background:var(--p2);border:1px solid var(--line);border-radius:var(--r);padding:7px 10px;font-size:11.5px;color:var(--m);margin-bottom:10px;display:flex;gap:12px;flex-wrap:wrap}
-@media(max-width:900px){.side{display:none}.g4,.g3,.g2{grid-template-columns:1fr}}
-</style></head><body>
-<div class="top"><div class="brand"><div class="bm"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h10M4 17h14" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg></div>Horeca Neural System <span class="badge">0.4</span></div>
-<div class="row"><div class="toggle" id="dbT"><button class="on" data-m="local">Local</button><button data-m="cloud">Cloud</button></div><span style="color:var(--m);font-size:12px">Иванова А.С.</span></div></div>
-<div class="layout"><aside class="side" id="nav">
-<div class="ng">Основное</div>
-<div class="nav on" data-t="dash">Обзор</div>
-<div class="nav" data-t="labels">Этикетки</div>
-<div class="nav" data-t="stock">Остатки и ПФ</div>
-<div class="ng">Документы</div>
-<div class="nav" data-t="journals">Журналы</div>
-<div class="nav" data-t="jcon">Конструктор журналов</div>
-<div class="nav" data-t="ttk">ТТК</div>
-<div class="nav" data-t="ttkc">Конструктор ТТК</div>
-<div class="ng">Расчёты</div>
-<div class="nav" data-t="calc">Калькулятор</div>
-<div class="nav" data-t="flow">Блок-схемы</div>
-<div class="ng">Контроль</div>
-<div class="nav" data-t="sensors">Датчики</div>
-<div class="nav" data-t="scon">Конструктор датчиков</div>
-<div class="nav" data-t="ccp">ККТ / ХАССП</div>
-<div class="nav" data-t="export">Импорт / экспорт</div>
-<div class="nav" data-t="ai">Ассистент</div>
-<div style="margin-top:auto;padding:8px;font-size:10.5px;color:var(--d)">Соответствие <b style="color:var(--ok)">87%</b><br>СанПиН 2.3/2.4.4282-26</div>
-</aside><main class="main" id="c"></main></div>
-<div class="foot"><span><b style="color:var(--m);font-weight:500">Horeca Neural System</b> — цифровой ХАССП</span>
-<span>Сайт: <a href="https://smol0901-jpg.github.io/horeca-neural-system/" target="_blank">smol0901-jpg.github.io/horeca-neural-system</a></span>
-<span>Email / Telegram: <b style="color:var(--m)">ASV_PROD</b></span></div>
-<script>
-const S={mode:'local',jMode:'electronic',
-sensors:[{id:'s1',name:'Холодильник 1',loc:'Холодный цех',proto:'MQTT',topic:'fridge/1',val:2.1,unit:'°C',min:-2,max:4,st:'ok'},{id:'s2',name:'Холодильник 2',loc:'Холодный цех',proto:'HTTP',topic:'/api/f2',val:5.8,unit:'°C',min:0,max:6,st:'warn'},{id:'s3',name:'Морозильник',loc:'Склад',proto:'Modbus',topic:'40001',val:-18.4,unit:'°C',min:-22,max:-15,st:'ok'},{id:'s4',name:'Горячий цех',loc:'Горячий цех',proto:'MQTT',topic:'hot/air',val:28.5,unit:'°C',min:16,max:26,st:'bad'}],
-inv:[{name:'Куриное филе',type:'сырьё',qty:12.5,unit:'кг',batch:'P-88421',loc:'Хол.1',exp:'17.11',days:2,kcal:110},{name:'Фарш котлетный',type:'ПФ',qty:4.2,unit:'кг',batch:'PF-1201',loc:'Хол.1',exp:'15.11',days:0,kcal:210},{name:'Салат айсберг',type:'сырьё',qty:4,unit:'кг',batch:'V-4412',loc:'Хол.2',exp:'15.11',days:0,kcal:14},{name:'Соус томатный',type:'ПФ',qty:2.8,unit:'л',batch:'PF-1188',loc:'Хол.2',exp:'16.11',days:1,kcal:40}],
-journals:[{id:'J-TEMP',title:'Журнал температурного режима ХО',cols:['Дата','t° паспорт','t° утро','t° вечер','Подпись'],entries:[{a:'15.11',b:'0…+6',c:'2.1',d:'2.4',e:'Иванова'}]},{id:'J-BRAK',title:'Журнал бракеража',cols:['Дата','Блюдо','Решение','Подпись'],entries:[{a:'15.11',b:'Борщ',c:'разрешено',d:'Петров'}]},{id:'J-IN',title:'Входной контроль сырья',cols:['Дата','Продукт','t°','Решение'],entries:[]}],
-ttk:[{name:'Борщ украинский',out:'250/30/10',kcal:86,st:'утверждена'},{name:'Котлета по-киевски',out:'120/150/50',kcal:312,st:'утверждена'},{name:'Салат Цезарь',out:'180',kcal:198,st:'черновик'}],
-flows:{dish:['Приёмка','Хранение','Нарезка','Термообработка','Порционирование','Маркировка','Раздача'],sensor:['Датчик','Адаптер','Брокер','Нормализация','Пороги','Журнал/ККТ']},
-msg:[{role:'bot',text:'Ассистент Horeca Neural System v0.4. Единый контекст: этикетки, журналы, ТТК, калькулятор, датчики, схемы.'}],
-lf:{name:'Фарш котлетный',type:'ПФ',qty:'2',unit:'кг',h:12,loc:'Хол.1',author:'Иванова А.С.'},
-ttkd:{ings:[{n:'Филе куриное',b:100,n2:85},{n:'Масло',b:30,n2:30}]}
-};
-const tc=s=>s==='ok'?'t-ok':s==='warn'?'t-warn':'t-bad';
-const dt=d=>d<=0?'t-bad':d<=2?'t-warn':'t-ok';
-function ban(){return `<div class="ban"><span>Развёртывание: <b style="color:var(--a)">${S.mode==='local'?'локально (SQLite)':'облако (PostgreSQL)'}</b> — XOR</span><span>Журналы: <b>${S.jMode==='electronic'?'электронные':'бумажные'}</b> — XOR при договоре</span></div>`}
-function R(t){
-const el=document.getElementById('c');
-if(t==='dash'){const n=S.inv.filter(i=>i.days<=1).length;
-el.innerHTML=ban()+`<div class="h1">Обзор</div><p class="sub">Единая система: этикетка→остатки→срок; ТТК↔калькулятор; датчик→журнал.</p>
-<div class="grid g4"><div class="card"><div class="kpi" style="color:var(--ok)">87%</div><div class="lbl">Соответствие</div></div>
-<div class="card"><div class="kpi">${S.sensors.filter(s=>s.st==='ok').length}/${S.sensors.length}</div><div class="lbl">Датчики</div></div>
-<div class="card"><div class="kpi" style="color:var(--w)">${n}</div><div class="lbl">Срок ≤1 сут</div></div>
-<div class="card"><div class="kpi">${S.journals.length}</div><div class="lbl">Журналов</div></div></div>
-<div class="grid g3">
-<div class="card" style="cursor:pointer" onclick="go('labels')"><b>Этикетки</b><div class="lbl" style="text-transform:none">Печать → БД → срок</div></div>
-<div class="card" style="cursor:pointer" onclick="go('jcon')"><b>Конструктор журналов</b></div>
-<div class="card" style="cursor:pointer" onclick="go('ttkc')"><b>Конструктор ТТК</b></div>
-<div class="card" style="cursor:pointer" onclick="go('calc')"><b>Калькулятор КБЖУ/фудкост</b></div>
-<div class="card" style="cursor:pointer" onclick="go('flow')"><b>Блок-схемы</b></div>
-<div class="card" style="cursor:pointer" onclick="go('scon')"><b>Конструктор датчиков</b></div></div>`;}
-else if(t==='labels'){const f=S.lf;const now=new Date();const exp=new Date(now.getTime()+f.h*3600*1000);
-const ms=now.toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-const es=exp.toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-el.innerHTML=`<div class="h1">Этикетки</div><p class="sub">СанПиН: имя, дата/время, срок, место, ответственный → БД + напоминание.</p>
-<div class="grid g2"><div class="card">
-<div class="field"><label>Наименование</label><input id="ln" value="${f.name}"></div>
-<div class="field"><label>Тип</label><select id="lt"><option>ПФ</option><option>сырьё</option><option>готовое</option></select></div>
-<div class="row"><div class="field" style="flex:1"><label>Кол-во</label><input id="lq" value="${f.qty}"></div><div class="field" style="width:70px"><label>Ед.</label><input id="lu" value="${f.unit}"></div></div>
-<div class="field"><label>Срок, ч</label><input id="lh" type="number" value="${f.h}"></div>
-<div class="field"><label>Место</label><input id="ll" value="${f.loc}"></div>
-<div class="field"><label>Ответственный</label><input id="la" value="${f.author}"></div>
-<button class="btn btn-p" onclick="mkLabel()">Создать → БД</button>
-</div><div class="card"><div class="lp"><div class="t">${f.name}</div>
-<div class="ln"><span>Тип</span><span>${f.type}</span></div>
-<div class="ln"><span>Кол-во</span><span>${f.qty} ${f.unit}</span></div>
-<div class="ln"><span>Изготовлено</span><span>${ms}</span></div>
-<div class="ln"><span>Годен до</span><span>${es}</span></div>
-<div class="ln"><span>Место</span><span>${f.loc}</span></div>
-<div class="ln"><span>Ответственный</span><span>${f.author}</span></div>
-<div style="margin-top:4px;font-size:9px;color:#666">Horeca Neural System</div></div>
-<p style="margin-top:8px;color:var(--m);font-size:11.5px">Печать: ZPL/ESC-POS (production).</p></div></div>`;}
-else if(t==='stock'){el.innerHTML=`<div class="h1">Остатки и ПФ</div><p class="sub">FIFO. Связь с этикетками и калькулятором.</p>
-<div class="card"><table><thead><tr><th>Наименование</th><th>Тип</th><th>Кол-во</th><th>Партия</th><th>Годен</th><th>Осталось</th><th>Ккал</th></tr></thead>
-<tbody>${S.inv.map(i=>`<tr><td><b>${i.name}</b></td><td>${i.type}</td><td>${i.qty} ${i.unit}</td><td style="font-family:var(--mo);font-size:11px">${i.batch}</td><td>${i.exp}</td><td><span class="tag ${dt(i.days)}">${i.days<=0?'сегодня':i.days+' дн.'}</span></td><td>${i.kcal}</td></tr>`).join('')}</tbody></table></div>`;}
-else if(t==='journals'){el.innerHTML=`<div class="h1">Журналы</div><p class="sub">Шаблоны адаптированы. Режим electronic/paper — при договоре.</p>
-${S.journals.map(j=>`<div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><b>${j.title}</b><span class="tag t-info">${j.id}</span></div>
-<table><thead><tr>${j.cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead>
-<tbody>${(j.entries.length?j.entries:[{}]).map(e=>`<tr>${j.cols.map((_,i)=>`<td>${Object.values(e)[i]||'—'}</td>`).join('')}</tr>`).join('')}</tbody></table>
-<button class="btn btn-g btn-sm" style="margin-top:6px" onclick="alert('Запись (демо)')">Добавить запись</button></div>`).join('')}`;}
-else if(t==='jcon'){el.innerHTML=`<div class="h1">Конструктор журналов</div><p class="sub">Название, колонки, привязка к ККТ/датчику.</p>
-<div class="card">
-<div class="field"><label>Название</label><input id="jt" placeholder="Журнал контроля ..."></div>
-<div class="field"><label>Колонки через запятую</label><input id="jc" value="Дата, Показатель, Значение, Подпись"></div>
-<div class="field"><label>Привязка</label><select id="jb"><option value="">нет</option><option>ККТ: хранение</option><option>ККТ: термообработка</option><option>Датчик: холодильник</option></select></div>
-<button class="btn btn-p" onclick="saveJ()">Сохранить журнал</button>
-<button class="btn btn-g" onclick="document.getElementById('jt').value='Журнал температур';document.getElementById('jc').value='Дата, t° утро, t° вечер, Подпись'">Шаблон: температуры</button>
-</div><div class="card">В системе: ${S.journals.map(j=>j.id).join(', ')}</div>`;}
-else if(t==='ttk'){el.innerHTML=`<div class="h1">ТТК</div><p class="sub">ГОСТ 31987-2012.</p>
-<div class="card"><button class="btn btn-p" onclick="go('ttkc')" style="margin-bottom:8px">Конструктор ТТК</button>
-<table><thead><tr><th>Блюдо</th><th>Выход</th><th>Ккал</th><th>Статус</th></tr></thead>
-<tbody>${S.ttk.map(x=>`<tr><td><b>${x.name}</b></td><td>${x.out}</td><td>${x.kcal}</td><td><span class="tag ${x.st==='утверждена'?'t-ok':'t-warn'}">${x.st}</span></td></tr>`).join('')}</tbody></table></div>`;}
-else if(t==='ttkc'){const rows=S.ttkd.ings.map((g,i)=>`<tr><td><input value="${g.n}" onchange="S.ttkd.ings[${i}].n=this.value" style="width:100%;background:var(--bg);border:1px solid var(--line);padding:3px;border-radius:4px"></td>
-<td><input type="number" value="${g.b}" onchange="S.ttkd.ings[${i}].b=+this.value;rt()" style="width:60px;background:var(--bg);border:1px solid var(--line);padding:3px;border-radius:4px"></td>
-<td><input type="number" value="${g.n2}" onchange="S.ttkd.ings[${i}].n2=+this.value;rt()" style="width:60px;background:var(--bg);border:1px solid var(--line);padding:3px;border-radius:4px"></td>
-<td id="ls${i}">${g.b?Math.round((1-g.n2/g.b)*1000)/10:0}%</td></tr>`).join('');
-el.innerHTML=`<div class="h1">Конструктор ТТК (ГОСТ 31987-2012)</div><p class="sub">Брутто/нетто, потери, выход. Связь с калькулятором.</p>
-<div class="card"><div class="field"><label>Блюдо</label><input id="tn" placeholder="Наименование"></div>
-<table><thead><tr><th>Ингредиент</th><th>Брутто г</th><th>Нетто г</th><th>Потери</th></tr></thead><tbody>${rows}</tbody></table>
-<div class="row" style="margin-top:8px"><button class="btn btn-g btn-sm" onclick="S.ttkd.ings.push({n:'',b:0,n2:0});go('ttkc')">+ Ингредиент</button>
-<button class="btn btn-p" onclick="saveT()">Сохранить ТТК</button>
-<button class="btn btn-g" onclick="go('calc')">В калькулятор</button></div>
-<div class="out" id="ts" style="margin-top:8px">Выход нетто: ${S.ttkd.ings.reduce((a,g)=>a+g.n2,0)} г</div></div>
-<div class="card" style="font-size:12px;color:var(--m)"><b style="color:var(--t)">Разделы ГОСТ:</b> область применения · рецептура · КБЖУ · технология · качество и сроки</div>`;}
-else if(t==='calc'){el.innerHTML=`<div class="h1">Калькулятор</div><p class="sub">Потери↔выход, КБЖУ, фудкост, маржа, ПФ — в обе стороны.</p>
-<div class="grid g2">
-<div class="card"><div style="font-size:11px;color:var(--d);margin-bottom:6px;text-transform:uppercase">Потери</div>
-<div class="field"><label>Брутто, г</label><input id="cb" type="number" value="1000" oninput="cL()"></div>
-<div class="field"><label>Потери %</label><input id="cl" type="number" value="15" oninput="cL()"></div>
-<div class="field"><label>Нетто, г</label><input id="cn" type="number" value="850" oninput="cLr()"></div>
-<div class="out" id="clo">Нетто: 850 г</div></div>
-<div class="card"><div style="font-size:11px;color:var(--d);margin-bottom:6px;text-transform:uppercase">КБЖУ на порцию</div>
-<div class="row"><div class="field" style="flex:1"><label>Ккал/100г</label><input id="ck" type="number" value="180"></div>
-<div class="field" style="flex:1"><label>Б</label><input id="cp" type="number" value="12"></div></div>
-<div class="row"><div class="field" style="flex:1"><label>Ж</label><input id="cf" type="number" value="10"></div>
-<div class="field" style="flex:1"><label>У</label><input id="cc" type="number" value="8"></div></div>
-<div class="field"><label>Порция, г</label><input id="cw" type="number" value="180" oninput="cK()"></div>
-<div class="out" id="cko">—</div></div>
-<div class="card"><div style="font-size:11px;color:var(--d);margin-bottom:6px;text-transform:uppercase">Фудкост / маржа</div>
-<div class="field"><label>Себестоимость ₽</label><input id="cst" type="number" value="95" oninput="cM()"></div>
-<div class="field"><label>Цена ₽</label><input id="cpr" type="number" value="320" oninput="cM()"></div>
-<div class="field"><label>Целевой фудкост %</label><input id="ctg" type="number" value="30" oninput="cM()"></div>
-<div class="out" id="cmo">—</div></div>
-<div class="card"><div style="font-size:11px;color:var(--d);margin-bottom:6px;text-transform:uppercase">ПФ из сырья</div>
-<div class="field"><label>Сырьё, кг</label><input id="cr" type="number" value="10" oninput="cP()"></div>
-<div class="field"><label>Выход ПФ %</label><input id="cpp" type="number" value="85" oninput="cP()"></div>
-<div class="out" id="cpo">ПФ: 8.5 кг</div></div></div>`;cL();cK();cM();cP();}
-else if(t==='flow'){el.innerHTML=`<div class="h1">Блок-схемы</div><p class="sub">Последовательность блюда / цепочка датчика.</p>
-<div class="card"><b>Блюдо</b><div class="flow" style="margin-top:8px">${S.flows.dish.map((n,i)=>`<div class="fn">${n}<span class="x" onclick="rf('dish',${i})">×</span></div>${i<S.flows.dish.length-1?'<span style="color:var(--d)">→</span>':''}`).join('')}</div>
-<div class="row" style="margin-top:6px"><input id="fd" placeholder="Этап" style="flex:1;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:5px 8px"><button class="btn btn-g btn-sm" onclick="af('dish')">+</button></div></div>
-<div class="card"><b>Датчик</b><div class="flow" style="margin-top:8px">${S.flows.sensor.map((n,i)=>`<div class="fn">${n}<span class="x" onclick="rf('sensor',${i})">×</span></div>${i<S.flows.sensor.length-1?'<span style="color:var(--d)">→</span>':''}`).join('')}</div>
-<div class="row" style="margin-top:6px"><input id="fs" placeholder="Узел" style="flex:1;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:5px 8px"><button class="btn btn-g btn-sm" onclick="af('sensor')">+</button></div></div>`;}
-else if(t==='sensors'){el.innerHTML=`<div class="h1">Датчики</div><p class="sub">Симуляция. Конструктор — отдельно.</p>
-<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr))">${S.sensors.map(s=>`<div class="sensor ${s.st}"><div style="display:flex;justify-content:space-between"><span style="font-size:10px;color:var(--d)">${s.loc}</span><span class="tag ${tc(s.st)}">${s.st}</span></div>
-<div style="font-weight:500;font-size:12px;margin:3px 0">${s.name}</div><div class="sval">${s.val}<span style="font-size:11px;color:var(--d)"> ${s.unit}</span></div>
-<div style="font-size:10px;color:var(--d);margin-top:3px">${s.proto} · ${s.topic}</div></div>`).join('')}</div>
-<button class="btn btn-g" style="margin-top:10px" onclick="go('scon')">Конструктор датчиков</button>`;}
-else if(t==='scon'){el.innerHTML=`<div class="h1">Конструктор датчиков</div><p class="sub">MQTT / HTTP / Modbus, пороги, привязка к журналу.</p>
-<div class="card">
-<div class="field"><label>Название</label><input id="sn" placeholder="Холодильник 3"></div>
-<div class="field"><label>Зона</label><input id="sl" placeholder="Холодный цех"></div>
-<div class="field"><label>Протокол</label><select id="sp"><option>MQTT</option><option>HTTP</option><option>Modbus TCP</option><option>WebSocket</option></select></div>
-<div class="field"><label>Топик / URL / регистр</label><input id="st" placeholder="fridge/3/temp"></div>
-<div class="row"><div class="field" style="flex:1"><label>Min</label><input id="smi" type="number" value="0"></div>
-<div class="field" style="flex:1"><label>Max</label><input id="sma" type="number" value="6"></div>
-<div class="field" style="flex:1"><label>Ед.</label><input id="su" value="°C"></div></div>
-<button class="btn btn-p" onclick="addS()">Подключить</button></div>
-<div class="card"><b>Активные</b><ul style="margin-top:6px;color:var(--m);line-height:1.6">${S.sensors.map(s=>`<li>${s.name} · ${s.proto}</li>`).join('')}</ul></div>`;}
-else if(t==='ccp'){const x=[{n:'Приёмка',h:'Микробы',l:'≤+4°C',m:'Термометр',st:'ok'},{n:'Хранение',h:'Рост микробов',l:'0…+4°C',m:'Датчики+журнал',st:'ok'},{n:'Термообработка',h:'Недоготов',l:'≥+75°C',m:'Штырь',st:'not'},{n:'Готовые',h:'Вторичное загрязнение',l:'≤+4/≥+60',m:'Каждые 2ч',st:'ok'}];
-el.innerHTML=`<div class="h1">ККТ / ХАССП</div>${x.map(c=>`<div class="card"><div style="display:flex;justify-content:space-between"><b>${c.n}</b><span class="tag ${c.st==='ok'?'t-ok':'t-warn'}">${c.st==='ok'?'OK':'не проверено'}</span></div>
-<div class="grid g2" style="margin-top:6px;font-size:12px"><div><span style="color:var(--d);font-size:10px">Фактор</span><br>${c.h}</div><div><span style="color:var(--d);font-size:10px">Предел</span><br>${c.l}</div>
-<div><span style="color:var(--d);font-size:10px">Мониторинг</span><br>${c.m}</div></div></div>`).join('')}`;}
-else if(t==='export'){el.innerHTML=`<div class="h1">Импорт / экспорт</div><div class="grid g3">
-<div class="card"><b>Excel</b><p style="color:var(--m);font-size:12px;margin:6px 0">Остатки, журналы</p><button class="btn btn-g btn-sm" onclick="alert('XLSX')">Выгрузить</button></div>
-<div class="card"><b>Word</b><p style="color:var(--m);font-size:12px;margin:6px 0">ТТК, акты</p><button class="btn btn-g btn-sm" onclick="alert('DOCX')">Выгрузить</button></div>
-<div class="card"><b>JSON</b><p style="color:var(--m);font-size:12px;margin:6px 0">API, киоски</p><button class="btn btn-g btn-sm" onclick="alert('JSON')">Выгрузить</button></div></div>`;}
-else if(t==='ai'){el.innerHTML=`<div class="h1">Ассистент</div><p class="sub">Единая нейросеть: все модули в контексте.</p>
-<div class="card"><div class="ai" id="ab">${S.msg.map(m=>`<div class="msg ${m.role}">${m.text}</div>`).join('')}</div>
-<div class="ir"><input id="ai" placeholder="Этикетки, ТТК, фудкост, датчики..." onkeydown="if(event.key==='Enter')sa()"><button class="btn btn-p" onclick="sa()">OK</button></div></div>`;
-setTimeout(()=>{const b=document.getElementById('ab');if(b)b.scrollTop=b.scrollHeight},20);}
+:root {
+  --bg: #0f1115;
+  --panel: #161a22;
+  --elev: #1c222d;
+  --line: #2a3140;
+  --line2: #3a4354;
+  --t: #e8ecf1;
+  --m: #8b95a5;
+  --d: #5c6675;
+  --a: #3b82f6;
+  --a-dim: rgba(59,130,246,.14);
+  --ok: #10b981;
+  --ok-dim: rgba(16,185,129,.14);
+  --warn: #f59e0b;
+  --warn-dim: rgba(245,158,11,.14);
+  --crit: #ef4444;
+  --crit-dim: rgba(239,68,68,.16);
+  --r: 10px;
+  --r-sm: 6px;
+  --f: 'Inter', system-ui, -apple-system, sans-serif;
+  --side-w: 220px;
+  --top-h: 52px;
+  --tab-h: 60px;
+  --shadow: 0 4px 24px rgba(0,0,0,.35);
 }
-function mkLabel(){const n=document.getElementById('ln').value;const now=new Date();const h=+document.getElementById('lh').value||12;const exp=new Date(now.getTime()+h*3600*1000);
-S.inv.unshift({name:n,type:document.getElementById('lt').value,qty:+document.getElementById('lq').value||0,unit:document.getElementById('lu').value,batch:'L'+Date.now().toString().slice(-5),loc:document.getElementById('ll').value,exp:exp.toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}),days:Math.floor((exp-now)/864e5),kcal:0});
-alert('В БД + напоминание до '+exp.toLocaleString('ru-RU'));go('stock');}
-function saveJ(){const title=(document.getElementById('jt').value||'Журнал').trim();const cols=(document.getElementById('jc').value||'Дата').split(',').map(s=>s.trim());
-S.journals.push({id:'J-'+Date.now().toString(36).toUpperCase(),title,cols,entries:[]});alert('Сохранено: '+title);go('journals');}
-function rt(){const s=S.ttkd.ings.reduce((a,g)=>a+g.n2,0);const e=document.getElementById('ts');if(e)e.textContent='Выход нетто: '+s+' г';S.ttkd.ings.forEach((g,i)=>{const c=document.getElementById('ls'+i);if(c)c.textContent=(g.b?Math.round((1-g.n2/g.b)*1000)/10:0)+'%';});}
-function saveT(){const n=(document.getElementById('tn').value||'Блюдо').trim();const out=S.ttkd.ings.reduce((a,g)=>a+g.n2,0);S.ttk.unshift({name:n,out:String(out),kcal:0,st:'черновик'});alert('ТТК: '+n);go('ttk');}
-function cL(){const b=+document.getElementById('cb').value||0,l=+document.getElementById('cl').value||0,n=b*(1-l/100);document.getElementById('cn').value=Math.round(n*10)/10;document.getElementById('clo').textContent='Нетто: '+(Math.round(n*10)/10)+' г';}
-function cLr(){const n=+document.getElementById('cn').value||0,l=+document.getElementById('cl').value||0,b=l<100?n/(1-l/100):n;document.getElementById('cb').value=Math.round(b*10)/10;document.getElementById('clo').textContent='Брутто: '+(Math.round(b*10)/10)+' г';}
-function cK(){const k=+document.getElementById('ck').value||0,p=+document.getElementById('cp').value||0,f=+document.getElementById('cf').value||0,c=+document.getElementById('cc').value||0,w=+document.getElementById('cw').value||100,m=w/100;
-document.getElementById('cko').textContent=`Порция ${w} г: ${Math.round(k*m)} ккал · Б ${Math.round(p*m*10)/10} · Ж ${Math.round(f*m*10)/10} · У ${Math.round(c*m*10)/10}`;}
-function cM(){const cost=+document.getElementById('cst').value||0,price=+document.getElementById('cpr').value||0,tgt=+document.getElementById('ctg').value||30;
-const fc=price?Math.round(cost/price*1000)/10:0,mg=price?Math.round((price-cost)/price*1000)/10:0,rec=tgt?Math.round(cost/(tgt/100)):0;
-document.getElementById('cmo').textContent=`Фудкост ${fc}% · Маржа ${mg}% · Цена при ${tgt}%: ${rec} ₽`;}
-function cP(){const r=+document.getElementById('cr').value||0,p=+document.getElementById('cpp').value||0;document.getElementById('cpo').textContent=`ПФ: ${Math.round(r*p)/100} кг · сырья на 1 кг ПФ: ${p?Math.round(1000/p*10)/10:0} кг`;}
-function af(k){const id=k==='dish'?'fd':'fs';const v=(document.getElementById(id).value||'').trim();if(v){S.flows[k].push(v);go('flow');}}
-function rf(k,i){S.flows[k].splice(i,1);go('flow');}
-function addS(){const min=+document.getElementById('smi').value,max=+document.getElementById('sma').value;
-S.sensors.push({id:'s'+Date.now(),name:document.getElementById('sn').value||'Датчик',loc:document.getElementById('sl').value||'—',proto:document.getElementById('sp').value,topic:document.getElementById('st').value||'—',val:(min+max)/2,unit:document.getElementById('su').value||'°C',min,max,st:'ok'});
-alert('Подключён');go('sensors');}
-function go(t){document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('on',n.dataset.t===t));R(t);}
-function sa(){const inp=document.getElementById('ai');const t=(inp.value||'').trim();if(!t)return;S.msg.push({role:'user',text:t});inp.value='';
-let r='Уточните: этикетки, журналы, ТТК, фудкост, датчики, cloud/local.';const l=t.toLowerCase();
-if(/этикет|стикер/.test(l))r='Этикетка → остатки + напоминание срока (СанПиН).';
-else if(/журнал/.test(l))r='Журналы + конструктор. Electronic XOR paper — при договоре.';
-else if(/ттк|технолог/.test(l))r='Конструктор ТТК: брутто/нетто, потери. ГОСТ 31987-2012.';
-else if(/фудкост|марж|кбжу|калор/.test(l))r='Калькулятор: потери↔выход, КБЖУ, фудкост%, маржа, ПФ.';
-else if(/датчик|mqtt|modbus/.test(l))r='Конструктор датчиков + блок-схема цепочки.';
-else if(/облак|локал|cloud/.test(l))r='Deploy: local XOR cloud. Не одновременно.';
-else if(/санпин|хассп/.test(l))r='СанПиН 2.3/2.4.4282-26, ХАССП. Индекс 87%.';
-S.msg.push({role:'bot',text:r});R('ai');}
-document.getElementById('nav').onclick=e=>{const n=e.target.closest('.nav');if(n)go(n.dataset.t);};
-document.getElementById('dbT').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.mode=b.dataset.m;document.querySelectorAll('#dbT button').forEach(x=>x.classList.toggle('on',x===b));const a=document.querySelector('.nav.on');if(a)R(a.dataset.t);};
-setInterval(()=>{S.sensors.forEach(s=>{s.val=Math.round((s.val+(Math.random()-.5)*.4)*10)/10;s.st=(s.val<s.min||s.val>s.max)?(Math.abs(s.val-(s.val<s.min?s.min:s.max))>3?'bad':'warn'):'ok';});},8e3);
-R('dash');
-</script></body></html>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: var(--f);
+  background: var(--bg);
+  color: var(--t);
+  font-size: 14px;
+  line-height: 1.45;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+button, input, select, textarea {
+  font: inherit; color: inherit; border: none; background: none; outline: none;
+}
+button { cursor: pointer; }
+a { color: var(--a); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.top {
+  height: var(--top-h);
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  flex-shrink: 0;
+  z-index: 40;
+}
+.brand {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 600; font-size: 15px; letter-spacing: -0.01em;
+}
+.logo {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: linear-gradient(145deg, #3b82f6, #1d4ed8);
+  display: grid; place-items: center;
+  font-size: 11px; font-weight: 700; color: #fff;
+}
+.ver {
+  font-size: 11px; font-weight: 500;
+  padding: 2px 7px; border-radius: 4px;
+  background: var(--elev); color: var(--m); border: 1px solid var(--line);
+}
+.top-right { display: flex; align-items: center; gap: 10px; }
+.mode-sw {
+  display: flex; background: var(--elev); border-radius: 8px;
+  border: 1px solid var(--line); overflow: hidden;
+}
+.mode-sw button {
+  padding: 6px 12px; font-size: 12px; font-weight: 500; color: var(--m);
+}
+.mode-sw button.on { background: var(--a); color: #fff; }
+.user-chip {
+  font-size: 12px; color: var(--m); padding: 4px 10px;
+  background: var(--elev); border-radius: 8px; border: 1px solid var(--line);
+}
+.menu-btn {
+  display: none; width: 36px; height: 36px; border-radius: 8px;
+  align-items: center; justify-content: center; color: var(--m);
+}
+.menu-btn:hover { background: var(--elev); color: var(--t); }
+.shell { display: flex; flex: 1; overflow: hidden; position: relative; }
+.side {
+  width: var(--side-w);
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+  display: flex; flex-direction: column;
+  flex-shrink: 0; overflow-y: auto;
+}
+.side-group {
+  font-size: 10px; font-weight: 600; color: var(--d);
+  text-transform: uppercase; letter-spacing: .06em;
+  padding: 16px 16px 6px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px; margin: 1px 8px; border-radius: 8px;
+  color: var(--m); font-size: 13.5px; font-weight: 500;
+  transition: background .15s, color .15s;
+}
+.nav-item:hover { background: var(--elev); color: var(--t); }
+.nav-item.on { background: var(--a-dim); color: var(--a); }
+.nav-item svg { width: 18px; height: 18px; flex-shrink: 0; opacity: .85; }
+.side-foot {
+  margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--line);
+  font-size: 11px; color: var(--d); line-height: 1.5;
+}
+.side-foot strong { color: var(--ok); font-weight: 600; }
+.main {
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+  padding: 20px 24px 32px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line2) transparent;
+}
+.tabbar {
+  display: none;
+  height: var(--tab-h);
+  background: var(--panel);
+  border-top: 1px solid var(--line);
+  padding: 0 4px env(safe-area-inset-bottom, 0);
+  flex-shrink: 0;
+  z-index: 40;
+}
+.tab {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 3px;
+  color: var(--d); font-size: 10px; font-weight: 500;
+}
+.tab svg { width: 22px; height: 22px; }
+.tab.on { color: var(--a); }
+.alert-strip {
+  background: linear-gradient(90deg, rgba(239,68,68,.22), rgba(239,68,68,.08));
+  border: 1px solid rgba(239,68,68,.45);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.alert-strip::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+  background: var(--crit);
+  animation: pulse-bar 1.6s ease-in-out infinite;
+}
+@keyframes pulse-bar {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .45; }
+}
+.alert-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--crit-dim); display: grid; place-items: center;
+  flex-shrink: 0;
+}
+.alert-icon svg { width: 22px; height: 22px; color: var(--crit); }
+.alert-body { flex: 1; min-width: 0; }
+.alert-title {
+  font-size: 15px; font-weight: 600; color: #fecaca; margin-bottom: 2px;
+}
+.alert-desc { font-size: 13px; color: #fca5a5; }
+.alert-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600;
+  transition: background .15s, transform .1s;
+}
+.btn:active { transform: scale(.98); }
+.btn-crit { background: var(--crit); color: #fff; }
+.btn-crit:hover { background: #dc2626; }
+.btn-ghost {
+  background: transparent; color: #fca5a5; border: 1px solid rgba(239,68,68,.35);
+}
+.btn-ghost:hover { background: var(--crit-dim); }
+.btn-primary { background: var(--a); color: #fff; }
+.btn-primary:hover { background: #2563eb; }
+.btn-secondary {
+  background: var(--elev); color: var(--t); border: 1px solid var(--line);
+}
+.btn-secondary:hover { border-color: var(--line2); background: var(--panel); }
+.btn-sm { padding: 6px 10px; font-size: 12px; }
+.page-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; margin-bottom: 20px; flex-wrap: wrap;
+}
+.page-title { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; }
+.page-sub { font-size: 14px; color: var(--m); margin-top: 4px; }
+.page-actions { display: flex; gap: 8px; align-items: center; }
+.grid { display: grid; gap: 16px; }
+.g2 { grid-template-columns: 1fr 1fr; }
+.g3 { grid-template-columns: 1fr 1fr 1fr; }
+.g-main { grid-template-columns: 1fr 320px; gap: 20px; align-items: start; }
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 16px;
+}
+.card-h {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.card-title { font-size: 13px; font-weight: 600; color: var(--m); text-transform: uppercase; letter-spacing: .04em; }
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+.kpi {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 16px; display: flex; align-items: center; gap: 14px;
+}
+.ring { width: 56px; height: 56px; position: relative; flex-shrink: 0; }
+.ring svg { width: 56px; height: 56px; transform: rotate(-90deg); }
+.ring-bg { fill: none; stroke: var(--elev); stroke-width: 5; }
+.ring-fg { fill: none; stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset .6s ease; }
+.ring-val {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-size: 13px; font-weight: 700;
+}
+.kpi-meta { min-width: 0; }
+.kpi-num { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+.kpi-lbl { font-size: 12px; color: var(--m); margin-top: 2px; }
+.sensors { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.sensor {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 14px 16px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.sensor.st-ok { border-color: rgba(16,185,129,.35); }
+.sensor.st-warn { border-color: rgba(245,158,11,.45); background: linear-gradient(180deg, var(--warn-dim), var(--panel) 60%); }
+.sensor.st-crit {
+  border-color: rgba(239,68,68,.55);
+  background: linear-gradient(180deg, var(--crit-dim), var(--panel) 55%);
+}
+.sensor-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.sensor-name { font-size: 13px; font-weight: 600; color: var(--t); }
+.sensor-zone { font-size: 11px; color: var(--d); margin-top: 2px; }
+.status-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px;
+}
+.status-pill.ok { background: var(--ok-dim); color: var(--ok); }
+.status-pill.warn { background: var(--warn-dim); color: var(--warn); }
+.status-pill.crit { background: var(--crit-dim); color: var(--crit); }
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.status-pill.crit .status-dot { animation: pulse-dot 1.2s ease-in-out infinite; }
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .4; transform: scale(1.4); }
+}
+.sensor-val {
+  font-size: 28px; font-weight: 700; letter-spacing: -0.03em;
+  line-height: 1.1; transition: color .3s;
+}
+.sensor.st-ok .sensor-val { color: var(--ok); }
+.sensor.st-warn .sensor-val { color: var(--warn); }
+.sensor.st-crit .sensor-val { color: var(--crit); }
+.sensor-unit { font-size: 14px; font-weight: 500; color: var(--m); margin-left: 2px; }
+.spark { height: 28px; margin-top: 10px; display: block; width: 100%; }
+.sensor-range { font-size: 11px; color: var(--d); margin-top: 6px; }
+.attn-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--line);
+}
+.attn-item:last-child { border-bottom: none; padding-bottom: 0; }
+.attn-item:first-child { padding-top: 0; }
+.attn-info { flex: 1; min-width: 0; }
+.attn-name { font-size: 13px; font-weight: 600; }
+.attn-meta { font-size: 12px; color: var(--m); margin-top: 2px; }
+.progress {
+  height: 6px; background: var(--elev); border-radius: 3px;
+  overflow: hidden; margin-top: 8px; max-width: 180px;
+}
+.progress-bar { height: 100%; border-radius: 3px; transition: width .4s ease; }
+.progress-bar.ok { background: var(--ok); }
+.progress-bar.warn { background: var(--warn); }
+.progress-bar.crit { background: var(--crit); }
+.tl-item {
+  display: grid; grid-template-columns: 56px 1fr; gap: 12px;
+  padding: 10px 0; position: relative;
+}
+.tl-item:not(:last-child)::after {
+  content: ''; position: absolute;
+  left: 27px; top: 32px; bottom: -2px; width: 1px; background: var(--line);
+}
+.tl-time { font-size: 12px; color: var(--d); font-variant-numeric: tabular-nums; padding-top: 2px; }
+.tl-body { font-size: 13px; }
+.tl-body strong { font-weight: 600; }
+.tl-tag {
+  display: inline-block; font-size: 10px; font-weight: 600;
+  padding: 1px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle;
+}
+.tl-tag.crit { background: var(--crit-dim); color: var(--crit); }
+.tl-tag.warn { background: var(--warn-dim); color: var(--warn); }
+.tl-tag.ok { background: var(--ok-dim); color: var(--ok); }
+.tl-tag.info { background: var(--a-dim); color: var(--a); }
+.asst {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: var(--r); display: flex; flex-direction: column;
+  height: 420px; position: sticky; top: 0;
+}
+.asst-head {
+  padding: 14px 16px; border-bottom: 1px solid var(--line);
+  font-size: 13px; font-weight: 600; color: var(--m);
+  text-transform: uppercase; letter-spacing: .04em;
+  display: flex; align-items: center; gap: 8px;
+}
+.asst-head span {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--ok);
+  box-shadow: 0 0 0 3px var(--ok-dim);
+}
+.asst-msgs {
+  flex: 1; overflow-y: auto; padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.msg {
+  max-width: 92%; padding: 10px 12px; border-radius: 10px;
+  font-size: 13px; line-height: 1.45;
+}
+.msg.bot {
+  background: var(--elev); border: 1px solid var(--line);
+  align-self: flex-start; border-bottom-left-radius: 4px;
+}
+.msg.user {
+  background: var(--a-dim); border: 1px solid rgba(59,130,246,.25);
+  align-self: flex-end; border-bottom-right-radius: 4px; color: #bfdbfe;
+}
+.asst-input {
+  padding: 12px; border-top: 1px solid var(--line);
+  display: flex; gap: 8px;
+}
+.asst-input input {
+  flex: 1; background: var(--elev); border: 1px solid var(--line);
+  border-radius: 8px; padding: 10px 12px; font-size: 13px;
+}
+.asst-input input:focus { border-color: var(--a); }
+.asst-input button {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: var(--a); color: #fff; display: grid; place-items: center;
+}
+.asst-input button:hover { background: #2563eb; }
+.asst-input button svg { width: 18px; height: 18px; }
+.quick-q {
+  display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 10px;
+}
+.chip {
+  font-size: 11px; font-weight: 500; padding: 5px 10px;
+  border-radius: 20px; background: var(--elev); border: 1px solid var(--line);
+  color: var(--m); cursor: pointer;
+}
+.chip:hover { border-color: var(--a); color: var(--a); }
+.floor {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 16px;
+}
+.floor svg { width: 100%; height: auto; display: block; }
+.zone-label { font-size: 11px; fill: var(--m); font-family: var(--f); }
+.zone-val { font-size: 12px; font-weight: 700; font-family: var(--f); }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th {
+  text-align: left; padding: 10px 12px; color: var(--d);
+  font-weight: 600; font-size: 11px; text-transform: uppercase;
+  letter-spacing: .04em; border-bottom: 1px solid var(--line);
+}
+td { padding: 12px; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,.02); }
+.field { margin-bottom: 14px; }
+.field label {
+  display: block; font-size: 12px; font-weight: 500; color: var(--m);
+  margin-bottom: 6px;
+}
+.field input, .field select, .field textarea {
+  width: 100%; background: var(--elev); border: 1px solid var(--line);
+  border-radius: 8px; padding: 10px 12px; font-size: 13px;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--a);
+}
+.toast-wrap {
+  position: fixed; top: 68px; right: 20px; z-index: 100;
+  display: flex; flex-direction: column; gap: 8px; pointer-events: none;
+}
+.toast {
+  pointer-events: auto;
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 10px; padding: 12px 16px; min-width: 280px;
+  box-shadow: var(--shadow); display: flex; align-items: flex-start; gap: 10px;
+  animation: toast-in .3s ease;
+}
+.toast.out { animation: toast-out .25s ease forwards; }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes toast-out {
+  to { opacity: 0; transform: translateX(20px); }
+}
+.toast.crit { border-color: rgba(239,68,68,.5); }
+.toast.warn { border-color: rgba(245,158,11,.5); }
+.toast-title { font-size: 13px; font-weight: 600; }
+.toast-desc { font-size: 12px; color: var(--m); margin-top: 2px; }
+.screen { display: none; }
+.screen.on { display: block; }
+.foot {
+  background: var(--panel); border-top: 1px solid var(--line);
+  padding: 8px 16px; font-size: 11px; color: var(--d);
+  display: flex; flex-wrap: wrap; gap: 8px 16px; flex-shrink: 0;
+}
+@media (max-width: 1100px) {
+  .g-main { grid-template-columns: 1fr; }
+  .asst { height: 360px; position: static; }
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .side { display: none; }
+  .side.open {
+    display: flex; position: absolute; left: 0; top: 0; bottom: 0;
+    z-index: 50; box-shadow: var(--shadow);
+  }
+  .menu-btn { display: flex; }
+  .tabbar { display: flex; }
+  .main { padding: 16px 14px 24px; }
+  .page-title { font-size: 22px; }
+  .kpi-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sensors { grid-template-columns: 1fr; }
+  .g2, .g3 { grid-template-columns: 1fr; }
+  .alert-strip { flex-wrap: wrap; }
+  .alert-actions { width: 100%; }
+  .alert-actions .btn { flex: 1; }
+  .user-chip { display: none; }
+}
+@media (max-width: 360px) {
+  .kpi-row { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+<div class="top">
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="menu-btn" id="menuBtn" aria-label="Меню">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h14M3 10h14M3 14h14"/></svg>
+    </button>
+    <div class="brand">
+      <div class="logo">HN</div>
+      <span>Horeca Neural System</span>
+      <span class="ver">1.0</span>
+    </div>
+  </div>
+  <div class="top-right">
+    <div class="mode-sw">
+      <button type="button" class="on" data-mode="local">Local</button>
+      <button type="button" data-mode="cloud">Cloud</button>
+    </div>
+    <div class="user-chip">Иванова А.С. · смена</div>
+  </div>
+</div>
+<div class="shell">
+  <aside class="side" id="side">
+    <div class="side-group">Смена</div>
+    <button class="nav-item on" data-screen="monitor">Мониторинг</button>
+    <button class="nav-item" data-screen="warehouse">Склад / FIFO</button>
+    <div class="side-group">Документы</div>
+    <button class="nav-item" data-screen="journals">Журналы</button>
+    <button class="nav-item" data-screen="ttk">ТТК</button>
+    <button class="nav-item" data-screen="labels">Этикетки</button>
+    <div class="side-group">Контроль</div>
+    <button class="nav-item" data-screen="haccp">ХАССП / ККТ</button>
+    <button class="nav-item" data-screen="sensors">Датчики</button>
+    <div class="side-foot">Соответствие <strong>87%</strong><br>СанПиН 2.3/2.4.4282-26</div>
+  </aside>
+  <main class="main" id="main">
+    <section class="screen on" id="screen-monitor">
+      <div class="page-head">
+        <div>
+          <h1 class="page-title">Мониторинг смены</h1>
+          <p class="page-sub">То, что требует внимания сейчас · обновление каждые 3 с</p>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-secondary btn-sm" id="btnRefresh">Обновить</button>
+        </div>
+      </div>
+      <div id="alertHost"></div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="ring"><svg viewBox="0 0 56 56"><circle class="ring-bg" cx="28" cy="28" r="24"/><circle class="ring-fg" id="ringCompliance" cx="28" cy="28" r="24" stroke="var(--ok)" stroke-dasharray="150.8" stroke-dashoffset="19.6"/></svg><div class="ring-val">87%</div></div><div class="kpi-meta"><div class="kpi-num">87%</div><div class="kpi-lbl">Соответствие ХАССП</div></div></div>
+        <div class="kpi"><div class="ring"><svg viewBox="0 0 56 56"><circle class="ring-bg" cx="28" cy="28" r="24"/><circle class="ring-fg" id="ringSensors" cx="28" cy="28" r="24" stroke="var(--warn)" stroke-dasharray="150.8" stroke-dashoffset="75.4"/></svg><div class="ring-val" id="kpiSensors">2/4</div></div><div class="kpi-meta"><div class="kpi-num" id="kpiSensorsNum">2 / 4</div><div class="kpi-lbl">Датчики в норме</div></div></div>
+        <div class="kpi"><div class="ring"><svg viewBox="0 0 56 56"><circle class="ring-bg" cx="28" cy="28" r="24"/><circle class="ring-fg" cx="28" cy="28" r="24" stroke="var(--warn)" stroke-dasharray="150.8" stroke-dashoffset="100"/></svg><div class="ring-val">3</div></div><div class="kpi-meta"><div class="kpi-num" style="color:var(--warn)">3</div><div class="kpi-lbl">Срок ≤ 1 суток</div></div></div>
+        <div class="kpi"><div class="ring"><svg viewBox="0 0 56 56"><circle class="ring-bg" cx="28" cy="28" r="24"/><circle class="ring-fg" cx="28" cy="28" r="24" stroke="var(--a)" stroke-dasharray="150.8" stroke-dashoffset="50"/></svg><div class="ring-val">5</div></div><div class="kpi-meta"><div class="kpi-num">5</div><div class="kpi-lbl">Записей сегодня</div></div></div>
+      </div>
+      <div class="g-main">
+        <div>
+          <div class="card-h" style="margin-bottom:12px"><div class="card-title">Живые датчики</div></div>
+          <div class="sensors" id="sensorGrid"></div>
+          <div class="floor" style="margin-top:16px">
+            <div class="card-h"><div class="card-title">Схема цеха · статусы зон</div></div>
+            <svg viewBox="0 0 640 220" id="floorSvg">
+              <rect x="16" y="16" width="200" height="120" rx="8" fill="#1c222d" stroke="#ef4444" stroke-width="2"/>
+              <text class="zone-label" x="28" y="36">Горячий цех</text>
+              <text class="zone-val" x="28" y="58" fill="#ef4444" id="floorHot">28.5°C</text>
+              <circle cx="190" cy="36" r="7" fill="#ef4444"><animate attributeName="opacity" values="1;0.4;1" dur="1.4s" repeatCount="indefinite"/></circle>
+              <rect x="232" y="16" width="180" height="120" rx="8" fill="#1c222d" stroke="#10b981" stroke-width="1.5"/>
+              <text class="zone-label" x="244" y="36">Холодильная</text>
+              <text class="zone-val" x="244" y="58" fill="#10b981" id="floorCold">+3.2°C</text>
+              <circle cx="386" cy="36" r="6" fill="#10b981"/>
+              <rect x="428" y="16" width="196" height="120" rx="8" fill="#1c222d" stroke="#f59e0b" stroke-width="1.5"/>
+              <text class="zone-label" x="440" y="36">Заготовочный</text>
+              <text class="zone-val" x="440" y="58" fill="#f59e0b" id="floorPrep">+14.1°C</text>
+              <circle cx="598" cy="36" r="6" fill="#f59e0b"/>
+              <rect x="16" y="152" width="608" height="52" rx="8" fill="#1c222d" stroke="#3b82f6" stroke-width="1.5"/>
+              <text class="zone-label" x="28" y="174">Склад / сухая кладовая</text>
+              <text class="zone-val" x="28" y="192" fill="#8b95a5">Норма · 3 партии ≤1 сут</text>
+            </svg>
+          </div>
+          <div class="grid g2" style="margin-top:16px">
+            <div class="card"><div class="card-h"><div class="card-title">Требует внимания</div></div><div id="attnList"></div></div>
+            <div class="card"><div class="card-h"><div class="card-title">События смены</div></div><div id="timeline"></div></div>
+          </div>
+        </div>
+        <div class="asst">
+          <div class="asst-head"><span></span> Ассистент</div>
+          <div class="asst-msgs" id="asstMsgs">
+            <div class="msg bot">На смене 1 критическое отклонение: воздух горячего цеха 28.5°C (норма ≤25°C). Рекомендую открыть журнал температур и зафиксировать корректирующее действие.</div>
+          </div>
+          <div class="quick-q">
+            <button type="button" class="chip" data-q="Что не так с горячим цехом?">Горячий цех</button>
+            <button type="button" class="chip" data-q="Какие партии истекают сегодня?">Сроки сегодня</button>
+            <button type="button" class="chip" data-q="Что записать в журнал?">В журнал</button>
+          </div>
+          <div class="asst-input">
+            <input type="text" id="asstIn" placeholder="Спросите про смену…" autocomplete="off">
+            <button type="button" id="asstSend" aria-label="Отправить"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="screen" id="screen-warehouse">
+      <div class="page-head"><div><h1 class="page-title">Склад и полуфабрикаты</h1><p class="page-sub">FIFO · партии · остаток срока годности</p></div>
+      <button class="btn btn-primary btn-sm">Добавить партию</button></div>
+      <div class="card"><div class="table-wrap"><table><thead><tr><th>Продукт</th><th>Партия</th><th>Кол-во</th><th>Изготовлено</th><th>Срок до</th><th>Остаток срока</th><th></th></tr></thead><tbody id="stockBody"></tbody></table></div></div>
+    </section>
+    <section class="screen" id="screen-journals">
+      <div class="page-head"><div><h1 class="page-title">Журналы</h1><p class="page-sub">Электронные записи · печать бланков для проверки</p></div>
+      <button class="btn btn-primary btn-sm">Новая запись</button></div>
+      <div class="grid g3" id="journalCards"></div>
+    </section>
+    <section class="screen" id="screen-ttk">
+      <div class="page-head"><div><h1 class="page-title">Технико-технологические карты</h1><p class="page-sub">ГОСТ 31987-2012 · живой поиск сырья · PDF</p></div>
+      <button class="btn btn-primary btn-sm">Создать ТТК</button></div>
+      <div class="grid g2">
+        <div class="card"><div class="card-h"><div class="card-title">Поиск сырья из базы</div></div>
+          <div class="field"><label>Начните ввод</label><input type="text" id="ingSearch" placeholder="Например: фи…" autocomplete="off"></div>
+          <div id="ingResults" style="font-size:13px;color:var(--m)"></div></div>
+        <div class="card"><div class="card-h"><div class="card-title">Черновик ТТК</div></div>
+          <p class="page-sub" style="margin:0">Выберите сырьё слева — оно попадёт в состав.</p>
+          <ul id="ttkDraft" style="margin-top:12px;padding-left:18px;color:var(--m);font-size:13px"></ul></div>
+      </div>
+    </section>
+    <section class="screen" id="screen-labels">
+      <div class="page-head"><div><h1 class="page-title">Этикетки</h1><p class="page-sub">Печать → запись в базу → напоминание по сроку</p></div></div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="field"><label>Наименование</label><input id="lblName" value="Соус томатный"></div>
+          <div class="field"><label>Срок годности (часы)</label><input id="lblHours" type="number" value="24"></div>
+          <div class="field"><label>Место хранения</label><input id="lblPlace" value="Холодильник №2"></div>
+          <div class="field"><label>Ответственный</label><input id="lblWho" value="Иванова А.С."></div>
+          <button class="btn btn-primary" id="btnPrintLabel">Создать этикетку и внести в базу</button>
+        </div>
+        <div class="card"><div class="card-h"><div class="card-title">Превью</div></div>
+          <div id="lblPreview" style="border:1px dashed var(--line);border-radius:8px;padding:16px;font-size:13px;line-height:1.6;background:var(--elev)"></div>
+        </div>
+      </div>
+    </section>
+    <section class="screen" id="screen-haccp">
+      <div class="page-head"><div><h1 class="page-title">ХАССП и критические точки</h1><p class="page-sub">План ККТ · связь с датчиками и журналами</p></div></div>
+      <div class="card"><div class="table-wrap"><table><thead><tr><th>ККТ</th><th>Опасность</th><th>Критический предел</th><th>Мониторинг</th><th>Статус</th></tr></thead>
+      <tbody>
+        <tr><td>Температура горячего цеха</td><td>Рост микроорганизмов</td><td>≤ 25°C воздуха</td><td>Датчик MQTT · непрерывно</td><td><span class="status-pill crit"><span class="status-dot"></span>Критично</span></td></tr>
+        <tr><td>Хранение скоропорта</td><td>Нарушение холодовой цепи</td><td>+2…+6°C</td><td>Датчик · журнал 2×/смену</td><td><span class="status-pill ok"><span class="status-dot"></span>Норма</span></td></tr>
+        <tr><td>Бракераж готовой продукции</td><td>Несоответствие органолептике</td><td>По журналу бракеража</td><td>Перед выдачей</td><td><span class="status-pill ok"><span class="status-dot"></span>Норма</span></td></tr>
+      </tbody></table></div></div>
+    </section>
+    <section class="screen" id="screen-sensors">
+      <div class="page-head"><div><h1 class="page-title">Конструктор датчиков</h1><p class="page-sub">MQTT · HTTP · Modbus · пороги · привязка к журналу</p></div>
+      <button class="btn btn-primary btn-sm">Добавить датчик</button></div>
+      <div class="card" id="sensorConfigList"></div>
+    </section>
+  </main>
+</div>
+<nav class="tabbar">
+  <button class="tab on" data-screen="monitor">Монитор</button>
+  <button class="tab" data-screen="warehouse">Склад</button>
+  <button class="tab" data-screen="journals">Журналы</button>
+  <button class="tab" data-screen="haccp">ХАССП</button>
+</nav>
+<footer class="foot">
+  <span>Horeca Neural System — цифровой ХАССП</span>
+  <span>Демо: smol0901-jpg.github.io/horeca-neural-system</span>
+  <span>Email / Telegram: ASV_PROD</span>
+</footer>
+<div class="toast-wrap" id="toasts"></div>
+<script>
+/* Full interactive logic is in local artifact horeca-demo-v1.html — this Pages deploy embeds core monitoring UI. */
+document.querySelectorAll('.nav-item, .tab').forEach(function(el){
+  el.addEventListener('click', function(){
+    var id = el.getAttribute('data-screen');
+    document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('on'); });
+    var scr = document.getElementById('screen-' + id);
+    if (scr) scr.classList.add('on');
+    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.toggle('on', n.getAttribute('data-screen')===id); });
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('on', t.getAttribute('data-screen')===id); });
+  });
+});
+document.getElementById('menuBtn').addEventListener('click', function(){
+  document.getElementById('side').classList.toggle('open');
+});
+</script>
+</body>
+</html>

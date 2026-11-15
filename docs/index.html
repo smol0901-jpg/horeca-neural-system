@@ -1,1 +1,177 @@
-PLACEHOLDER_USE_LOCAL
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f1115">
+<meta name="description" content="Horeca Neural System — цифровой ХАССП для ресторанов, кафе и столовых.">
+<title>Horeca Neural System</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/print.css">
+<link rel="stylesheet" href="css/kiosk.css">
+</head>
+<body>
+<div class="top">
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="menu-btn" id="menuBtn" aria-label="Меню"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button>
+    <div class="brand">
+      <img class="logo-img" src="assets/logo-mark.svg" width="28" height="28" alt="HNS">
+      <span>Horeca Neural System</span>
+      <span class="ver">1.1</span>
+    </div>
+  </div>
+  <div class="top-right">
+    <div class="ws-badge off" id="wsBadge">OFFLINE</div>
+    <div class="mode-sw">
+      <button type="button" class="on">Local</button>
+      <button type="button">Cloud</button>
+    </div>
+    <div class="user-chip">Иванова А.С. · смена</div>
+  </div>
+</div>
+<div class="shell">
+  <aside class="side" id="side">
+    <div class="side-group">Смена</div>
+    <button class="nav-item on" data-screen="monitor">Мониторинг</button>
+    <button class="nav-item" data-screen="warehouse">Склад / FIFO</button>
+    <div class="side-group">Документы</div>
+    <button class="nav-item" data-screen="journals">Журналы</button>
+    <button class="nav-item" data-screen="ttk">ТТК</button>
+    <button class="nav-item" data-screen="labels">Этикетки</button>
+    <div class="side-group">Контроль</div>
+    <button class="nav-item" data-screen="haccp">ХАССП / ККТ</button>
+    <button class="nav-item" data-screen="sensors">Датчики</button>
+    <button class="nav-item" data-screen="brand">О продукте</button>
+    <div class="side-foot">Соответствие <strong>87%</strong><br>СанПиН 2.3/2.4.4282-26</div>
+  </aside>
+  <main class="main" id="main">
+    <section class="screen on" id="screen-monitor">
+      <div class="page-head">
+        <div><h1 class="page-title">Мониторинг смены</h1><p class="page-sub">Реальное время · WebSocket / симулятор</p></div>
+        <button class="btn btn-secondary btn-sm" id="btnRefresh">Обновить</button>
+      </div>
+      <div id="alertHost"></div>
+      <div class="kpi-row anim-stagger">
+        <div class="kpi"><div class="ring"><svg viewBox="0 0 56 56"><circle class="ring-bg" cx="28" cy="28" r="24"/><circle class="ring-fg" cx="28" cy="28" r="24" stroke="var(--ok)" stroke-dasharray="150.8" stroke-dashoffset="19.6"/></svg><div class="ring-val">87%</div></div><div class="kpi-meta"><div class="kpi-num">87%</div><div class="kpi-lbl">Соответствие ХАССП</div></div></div>
+        <div class="kpi"><div class="ring"><svg viewBox="0 0 56 56"><circle class="ring-bg" cx="28" cy="28" r="24"/><circle class="ring-fg" id="ringSensors" cx="28" cy="28" r="24" stroke="var(--warn)" stroke-dasharray="150.8" stroke-dashoffset="75.4"/></svg><div class="ring-val" id="kpiSensors">2/4</div></div><div class="kpi-meta"><div class="kpi-num" id="kpiSensorsNum">2 / 4</div><div class="kpi-lbl">Датчики в норме</div></div></div>
+        <div class="kpi"><div class="ring"><svg viewBox="0 0 56 56"><circle class="ring-bg" cx="28" cy="28" r="24"/><circle class="ring-fg" cx="28" cy="28" r="24" stroke="var(--warn)" stroke-dasharray="150.8" stroke-dashoffset="100"/></svg><div class="ring-val">3</div></div><div class="kpi-meta"><div class="kpi-num" style="color:var(--warn)">3</div><div class="kpi-lbl">Срок ≤ 1 суток</div></div></div>
+        <div class="kpi"><div class="ring"><svg viewBox="0 0 56 56"><circle class="ring-bg" cx="28" cy="28" r="24"/><circle class="ring-fg" cx="28" cy="28" r="24" stroke="var(--a)" stroke-dasharray="150.8" stroke-dashoffset="50"/></svg><div class="ring-val">5</div></div><div class="kpi-meta"><div class="kpi-num">5</div><div class="kpi-lbl">Записей сегодня</div></div></div>
+      </div>
+      <div class="g-main">
+        <div>
+          <div class="card-h" style="margin-bottom:12px"><div class="card-title">Живые датчики</div></div>
+          <div class="sensors" id="sensorGrid"></div>
+          <div class="floor" style="margin-top:16px">
+            <div class="card-h"><div class="card-title">Схема цеха</div></div>
+            <svg viewBox="0 0 640 220">
+              <rect x="16" y="16" width="200" height="120" rx="8" fill="#1c222d" stroke="#ef4444" stroke-width="2"/>
+              <text class="zone-label" x="28" y="36">Горячий цех</text>
+              <text class="zone-val" x="28" y="58" fill="#ef4444" id="floorHot">28.5°C</text>
+              <circle cx="190" cy="36" r="7" fill="#ef4444"><animate attributeName="opacity" values="1;0.4;1" dur="1.4s" repeatCount="indefinite"/></circle>
+              <rect x="232" y="16" width="180" height="120" rx="8" fill="#1c222d" stroke="#10b981" stroke-width="1.5"/>
+              <text class="zone-label" x="244" y="36">Холодильная</text>
+              <text class="zone-val" x="244" y="58" fill="#10b981" id="floorCold">+3.2°C</text>
+              <circle cx="386" cy="36" r="6" fill="#10b981"/>
+              <rect x="428" y="16" width="196" height="120" rx="8" fill="#1c222d" stroke="#f59e0b" stroke-width="1.5"/>
+              <text class="zone-label" x="440" y="36">Заготовочный</text>
+              <text class="zone-val" x="440" y="58" fill="#f59e0b" id="floorPrep">+14.1°C</text>
+              <circle cx="598" cy="36" r="6" fill="#f59e0b"/>
+              <rect x="16" y="152" width="608" height="52" rx="8" fill="#1c222d" stroke="#3b82f6" stroke-width="1.5"/>
+              <text class="zone-label" x="28" y="174">Склад</text>
+              <text class="zone-val" x="28" y="192" fill="#8b95a5">3 партии ≤1 сут</text>
+            </svg>
+          </div>
+          <div class="grid g2" style="margin-top:16px">
+            <div class="card"><div class="card-h"><div class="card-title">Требует внимания</div></div><div id="attnList"></div></div>
+            <div class="card"><div class="card-h"><div class="card-title">События смены</div></div><div id="timeline"></div></div>
+          </div>
+        </div>
+        <div class="asst">
+          <div class="asst-head"><span class="live-dot"></span> Ассистент</div>
+          <div class="asst-msgs" id="asstMsgs"><div class="msg bot">Критическое отклонение по горячему цеху. Подскажу действия по журналу и ККТ.</div></div>
+          <div class="quick-q">
+            <button type="button" class="chip" data-q="Что не так с горячим цехом?">Горячий цех</button>
+            <button type="button" class="chip" data-q="Какие партии истекают сегодня?">Сроки</button>
+            <button type="button" class="chip" data-q="Что записать в журнал?">В журнал</button>
+          </div>
+          <div class="asst-input">
+            <input type="text" id="asstIn" placeholder="Спросите про смену…" autocomplete="off">
+            <button type="button" id="asstSend" aria-label="Отправить"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="screen" id="screen-warehouse">
+      <div class="page-head"><div><h1 class="page-title">Склад и полуфабрикаты</h1><p class="page-sub">FIFO</p></div></div>
+      <div class="card"><div class="table-wrap"><table><thead><tr><th>Продукт</th><th>Партия</th><th>Кол-во</th><th>Изготовлено</th><th>Срок до</th><th>Остаток</th><th></th></tr></thead><tbody id="stockBody"></tbody></table></div></div>
+    </section>
+    <section class="screen" id="screen-journals">
+      <div class="page-head"><div><h1 class="page-title">Журналы</h1><p class="page-sub">Электронные / печать</p></div></div>
+      <div class="grid g3" id="journalCards"></div>
+    </section>
+    <section class="screen" id="screen-ttk">
+      <div class="page-head"><div><h1 class="page-title">ТТК</h1><p class="page-sub">ГОСТ 31987-2012 · поиск сырья</p></div></div>
+      <div class="grid g2">
+        <div class="card"><div class="field"><label>Поиск</label><input type="text" id="ingSearch" placeholder="фи…"></div><div id="ingResults"></div></div>
+        <div class="card"><div class="card-title">Черновик</div><ul id="ttkDraft" style="margin-top:12px;padding-left:18px;color:var(--m)"></ul></div>
+      </div>
+    </section>
+    <section class="screen" id="screen-labels">
+      <div class="page-head"><div><h1 class="page-title">Этикетки</h1></div></div>
+      <div class="grid g2">
+        <div class="card">
+          <div class="field"><label>Наименование</label><input id="lblName" value="Соус томатный"></div>
+          <div class="field"><label>Срок (часы)</label><input id="lblHours" type="number" value="24"></div>
+          <div class="field"><label>Место</label><input id="lblPlace" value="Холодильник №2"></div>
+          <div class="field"><label>Ответственный</label><input id="lblWho" value="Иванова А.С."></div>
+          <button class="btn btn-primary" id="btnPrintLabel">Создать этикетку</button>
+        </div>
+        <div class="card"><div class="label-preview"><img src="assets/label-template.svg" alt="Лейбл" style="width:100%"><div id="lblPreviewText" style="padding:12px;font-size:12px;background:#f8fafc;color:#0f172a"></div></div></div>
+      </div>
+    </section>
+    <section class="screen" id="screen-haccp">
+      <div class="page-head"><div><h1 class="page-title">ХАССП / ККТ</h1></div></div>
+      <div class="card"><table><thead><tr><th>ККТ</th><th>Опасность</th><th>Предел</th><th>Мониторинг</th><th>Статус</th></tr></thead><tbody id="ccpBody"></tbody></table></div>
+    </section>
+    <section class="screen" id="screen-sensors">
+      <div class="page-head"><div><h1 class="page-title">Датчики</h1></div></div>
+      <div class="card" id="sensorConfigList"></div>
+    </section>
+    <section class="screen" id="screen-brand">
+      <div class="page-head"><div><h1 class="page-title">О продукте</h1><p class="page-sub">от 3 000 ₽/мес · лицензия от 50 000 ₽</p></div></div>
+      <div class="card" style="margin-bottom:16px;display:flex;gap:16px;align-items:center">
+        <img src="assets/logo.svg" alt="Logo" width="160" height="42">
+        <div style="font-size:13px;color:var(--m)">Email / Telegram: <strong style="color:var(--t)">ASV_PROD</strong></div>
+      </div>
+      <div class="photo-grid">
+        <div class="photo-card"><img src="assets/photos/kitchen-hot.svg" alt=""><span>Горячий цех</span></div>
+        <div class="photo-card"><img src="assets/photos/cold-storage.svg" alt=""><span>Холодильная</span></div>
+        <div class="photo-card"><img src="assets/photos/prep-area.svg" alt=""><span>Заготовка</span></div>
+        <div class="photo-card"><img src="assets/photos/warehouse.svg" alt=""><span>Склад</span></div>
+        <div class="photo-card"><img src="assets/photos/label-print.svg" alt=""><span>Этикетки</span></div>
+      </div>
+    </section>
+  </main>
+</div>
+<nav class="tabbar">
+  <button class="tab on" data-screen="monitor">Монитор</button>
+  <button class="tab" data-screen="warehouse">Склад</button>
+  <button class="tab" data-screen="journals">Журналы</button>
+  <button class="tab" data-screen="haccp">ХАССП</button>
+</nav>
+<footer class="foot">
+  <span>Horeca Neural System — цифровой ХАССП</span>
+  <span>Email / Telegram: ASV_PROD</span>
+</footer>
+<div class="toast-wrap" id="toasts"></div>
+<script src="js/app.js"></script>
+</body>
+</html>

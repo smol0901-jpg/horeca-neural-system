@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 32" fill="none">
+  <rect width="28" height="28" y="2" rx="7" fill="url(#g)"/>
+  <path d="M8 12h12M8 16h8M8 20h10" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+  <text x="36" y="21" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#e8ecf1">Horeca Neural</text>
+  <defs><linearGradient id="g" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#3b82f6"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient></defs>
+</svg>

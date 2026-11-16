@@ -1,1 +1,6 @@
-{"version":"1.2","build":"2026-11-15","channel":"demo","feature":"sanpin-4282-26-readiness"}
+{
+  "version": "1.3",
+  "build": "2026-11-16",
+  "channel": "demo",
+  "feature": "print-kiosk-fix + ready-meals-note"
+}

@@ -1,0 +1,12 @@
+/* Print styles for journals and reports — readable for Rospotrebnadzor */
+@media print {
+  body { background: #fff; color: #000; }
+  .top, .side, .tabbar, .foot, .asst, .toast-wrap, .menu-btn, .mode-sw, .ws-badge, .btn { display: none !important; }
+  .shell { display: block; }
+  .main { padding: 0; }
+  .screen { display: block !important; page-break-inside: avoid; }
+  .card, table { border: 1px solid #000; }
+  table { width: 100%; border-collapse: collapse; font-size: 11pt; }
+  th, td { border: 1px solid #000; padding: 4px 6px; }
+  .page-title { font-size: 16pt; }
+}

@@ -1,0 +1,4 @@
+/* Minimal kiosk / full-screen mode support */
+body.kiosk .top, body.kiosk .side, body.kiosk .tabbar, body.kiosk .foot { display: none; }
+body.kiosk .main { margin: 0; padding: 16px; }
+body.kiosk .page-title { font-size: 1.6rem; }

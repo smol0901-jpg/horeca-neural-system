@@ -1,6 +1,6 @@
 {
-  "version": "1.3",
-  "build": "2026-11-16",
+  "version": "1.4",
+  "build": "2026-11-17",
   "channel": "demo",
-  "feature": "print-kiosk-fix + ready-meals-note"
+  "feature": "ready-meals-project details + version bump"
 }

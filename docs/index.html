@@ -25,7 +25,7 @@
     <div class="brand">
       <img class="logo-img" src="assets/logo-mark.svg" width="28" height="28" alt="HNS">
       <span>Horeca Neural System</span>
-      <span class="ver">1.4</span>
+      <span class="ver">1.5</span>
     </div>
   </div>
   <div class="top-right">
@@ -50,7 +50,7 @@
     <button class="nav-item" data-screen="haccp">ХАССП / ККТ</button>
     <button class="nav-item" data-screen="sensors">Датчики</button>
     <button class="nav-item" data-screen="brand">О продукте</button>
-    <div class="side-foot">Соответствие <strong>89%</strong><br>СанПиН 2.3/2.4.4282-26<br>с 01.09.2026 · ХАССП обязателен</div>
+    <div class="side-foot">Соответствие <strong>90%</strong><br>СанПиН 2.3/2.4.4282-26<br>с 01.09.2026 · ХАССП обязателен</div>
   </aside>
   <main class="main" id="main">
     <section class="screen on" id="screen-monitor">
@@ -60,11 +60,11 @@
       </div>
       <div class="card" style="margin-bottom:16px;background:linear-gradient(135deg,#1a2332,#121820);border:1px solid #3b82f6;padding:14px 16px">
         <div style="font-size:13px;font-weight:600;color:#60a5fa;margin-bottom:4px">Готовность к СанПиН 2.3/2.4.4282-26</div>
-        <div style="font-size:12.5px;color:var(--m);line-height:1.45">С 1 сентября 2026 г. ХАССП обязателен для всех предприятий общепита. Контроль фритюрного жира, информирование об аллергенах, сроки хранения готовых блюд (до 3 ч), прослеживаемость при кейтеринге — уже в системе.<br><strong>Проект Роспотребнадзора (12.11.2026):</strong> отдельные требования для упакованной готовой еды (магазины, доставка): ХАССП, ежедневный темп. контроль холодильников/складов, охлаждённая на выпуске ≤ +6°C, замороженная ≤ −18°C, порционирование ≤ 1 ч при ≤ +12°C (или 30 мин без охлаждения), запрет производства в жилых домах. Система готова к расширению датчиков и журналов.</div>
+        <div style="font-size:12.5px;color:var(--m);line-height:1.45">С 1 сентября 2026 г. ХАССП обязателен для всех предприятий общепита. Контроль фритюрного жира, информирование об аллергенах, сроки хранения готовых блюд (до 3 ч), прослеживаемость при кейтеринге — уже в системе.<br><strong>Статус на 18.11.2026:</strong> новых ограничений и изменений в СанПиН / Роспотребнадзор не выявлено. ТР ТС 021/2011 действует (ред. от 22.04.2024), обновление перечня стандартов — с 09.03.2027. Система поддерживает требования по готовой еде (≤+6°C / ≤−18°C, порционирование).</div>
       </div>
       <div id="alertHost"></div>
       <div class="kpi-row anim-stagger">
-        <div class="kpi"><div class="ring"><svg viewBox="0 0 56 56"><circle class="ring-bg" cx="28" cy="28" r="24"/><circle class="ring-fg" cx="28" cy="28" r="24" stroke="var(--ok)" stroke-dasharray="150.8" stroke-dashoffset="16.6"/></svg><div class="ring-val">89%</div></div><div class="kpi-meta"><div class="kpi-num">89%</div><div class="kpi-lbl">Соответствие ХАССП</div></div></div>
+        <div class="kpi"><div class="ring"><svg viewBox="0 0 56 56"><circle class="ring-bg" cx="28" cy="28" r="24"/><circle class="ring-fg" cx="28" cy="28" r="24" stroke="var(--ok)" stroke-dasharray="150.8" stroke-dashoffset="15"/></svg><div class="ring-val">90%</div></div><div class="kpi-meta"><div class="kpi-num">90%</div><div class="kpi-lbl">Соответствие ХАССП</div></div></div>
         <div class="kpi"><div class="ring"><svg viewBox="0 0 56 56"><circle class="ring-bg" cx="28" cy="28" r="24"/><circle class="ring-fg" id="ringSensors" cx="28" cy="28" r="24" stroke="var(--warn)" stroke-dasharray="150.8" stroke-dashoffset="75.4"/></svg><div class="ring-val" id="kpiSensors">2/4</div></div><div class="kpi-meta"><div class="kpi-num" id="kpiSensorsNum">2 / 4</div><div class="kpi-lbl">Датчики в норме</div></div></div>
         <div class="kpi"><div class="ring"><svg viewBox="0 0 56 56"><circle class="ring-bg" cx="28" cy="28" r="24"/><circle class="ring-fg" cx="28" cy="28" r="24" stroke="var(--warn)" stroke-dasharray="150.8" stroke-dashoffset="100"/></svg><div class="ring-val">3</div></div><div class="kpi-meta"><div class="kpi-num" style="color:var(--warn)">3</div><div class="kpi-lbl">Срок ≤ 1 суток</div></div></div>
         <div class="kpi"><div class="ring"><svg viewBox="0 0 56 56"><circle class="ring-bg" cx="28" cy="28" r="24"/><circle class="ring-fg" cx="28" cy="28" r="24" stroke="var(--a)" stroke-dasharray="150.8" stroke-dashoffset="50"/></svg><div class="ring-val">5</div></div><div class="kpi-meta"><div class="kpi-num">5</div><div class="kpi-lbl">Записей сегодня</div></div></div>
@@ -134,6 +134,7 @@
         <div class="card">
           <div class="field"><label>Наименование</label><input id="lblName" value="Соус томатный"></div>
           <div class="field"><label>Срок (часы)</label><input id="lblHours" type="number" value="24"></div>
+          <div class="field"><label>Аллергены</label><input id="lblAllergen" value="глютен, молоко" placeholder="если есть"></div>
           <div class="field"><label>Место</label><input id="lblPlace" value="Холодильник №2"></div>
           <div class="field"><label>Ответственный</label><input id="lblWho" value="Иванова А.С."></div>
           <button class="btn btn-primary" id="btnPrintLabel">Создать этикетку</button>
@@ -164,7 +165,8 @@
           <li>Срок хранения готовых блюд, требующих разогрева — до 3 часов</li>
           <li>Запрет заморозки нереализованных готовых блюд</li>
           <li>Прослеживаемость при кейтеринге и доставке</li>
-          <li>Проект Роспотребнадзора (12.11.2026) для упакованной готовой еды: ХАССП + ежедневный темп. контроль, охлаждённая ≤+6°C, замороженная ≤−18°C, порционирование с ограничениями по времени и температуре, запрет в жилых домах</li>
+          <li>Личная гигиена и осмотр персонала (п. 31) — журнал в системе</li>
+          <li>На 18.11.2026 новых распоряжений нет; ТР ТС 021/2011 без изменений текста</li>
         </ul>
       </div>
       <div class="photo-grid">

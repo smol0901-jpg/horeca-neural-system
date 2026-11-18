@@ -1,6 +1,6 @@
 {
-  "version": "1.4",
-  "build": "2026-11-17",
+  "version": "1.5",
+  "build": "2026-11-18",
   "channel": "demo",
-  "feature": "ready-meals-project details + version bump"
+  "feature": "law status 18.11.2026 + allergen field on labels + J-HYGIENE"
 }

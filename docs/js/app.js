@@ -169,12 +169,15 @@
       { id: 'Ж-Т-01', title: 'Температурный режим ХО', entries: 12, status: 'ok' },
       { id: 'Ж-Б-02', title: 'Бракераж', entries: 4, status: 'ok' },
       { id: 'Ж-В-03', title: 'Входной контроль', entries: 2, status: 'warn' },
-      { id: 'Ж-К-05', title: 'Корректирующие действия', entries: 0, status: 'crit' }
+      { id: 'Ж-К-05', title: 'Корректирующие действия', entries: 0, status: 'crit' },
+      { id: 'J-HYGIENE', title: 'Личная гигиена', entries: 0, status: 'warn' }
     ];
     state.ingredients = ['Филе куриное', 'Филе индейки', 'Филе минтая', 'Молоко 3.2%', 'Мука пшеничная в/с', 'Томаты свежие', 'Лук репчатый'];
     state.ccp = [
       { name: 'Температура горячего цеха', hazard: 'Рост микроорганизмов', limit: '≤ 25°C', monitor: 'MQTT', status: 'crit' },
-      { name: 'Хранение скоропорта', hazard: 'Холодовая цепь', limit: '+2…+6°C', monitor: 'Датчик', status: 'ok' }
+      { name: 'Хранение скоропорта', hazard: 'Холодовая цепь', limit: '+2…+6°C', monitor: 'Датчик', status: 'ok' },
+      { name: 'Фритюрный жир', hazard: 'Качество жира', limit: 'ежедневно', monitor: 'Журнал', status: 'ok' },
+      { name: 'Аллергены на этикетке', hazard: 'Информирование', limit: 'указаны', monitor: 'Этикетка', status: 'ok' }
     ];
     state.timeline = [
       { t: '06:12', text: 'Открыта смена · Иванова А.С.', tag: 'info', tl: 'Смена' },
@@ -235,10 +238,11 @@
       var h = +document.getElementById('lblHours').value || 24;
       var now = new Date(), until = new Date(now.getTime() + h * 3600000);
       var fmt = function (d) { return d.toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }); };
+      var allergen = (document.getElementById('lblAllergen') || {}).value || '';
       var t = document.getElementById('lblPreviewText');
-      if (t) t.innerHTML = '<strong>' + nameEl.value + '</strong><br>Изг.: ' + fmt(now) + ' · до ' + fmt(until) + '<br>' + document.getElementById('lblPlace').value + ' · ' + document.getElementById('lblWho').value;
+      if (t) t.innerHTML = '<strong>' + nameEl.value + '</strong><br>Изг.: ' + fmt(now) + ' · до ' + fmt(until) + '<br>' + document.getElementById('lblPlace').value + ' · ' + document.getElementById('lblWho').value + (allergen ? '<br>Аллергены: ' + allergen : '');
     }
-    ['lblName', 'lblHours', 'lblPlace', 'lblWho'].forEach(function (id) {
+    ['lblName', 'lblHours', 'lblAllergen', 'lblPlace', 'lblWho'].forEach(function (id) {
       var el = document.getElementById(id);
       if (el) el.addEventListener('input', updateLbl);
     });

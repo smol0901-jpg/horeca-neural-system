@@ -1,6 +1,6 @@
 {
-  "version": "1.5",
-  "build": "2026-11-18",
+  "version": "1.6",
+  "build": "2026-11-19",
   "channel": "demo",
-  "feature": "law status 18.11.2026 + allergen field on labels + J-HYGIENE"
+  "feature": "law status 19.11.2026 + ready-meals draft SanPiN note + J-HYGIENE status"
 }

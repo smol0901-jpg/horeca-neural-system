@@ -170,7 +170,8 @@
       { id: 'Ж-Б-02', title: 'Бракераж', entries: 4, status: 'ok' },
       { id: 'Ж-В-03', title: 'Входной контроль', entries: 2, status: 'warn' },
       { id: 'Ж-К-05', title: 'Корректирующие действия', entries: 0, status: 'crit' },
-      { id: 'J-HYGIENE', title: 'Личная гигиена', entries: 0, status: 'warn' }
+      { id: 'J-HYGIENE', title: 'Личная гигиена', entries: 0, status: 'warn' },
+      { id: 'J-READY', title: 'Контроль готовой еды', entries: 0, status: 'warn' }
     ];
     state.ingredients = ['Филе куриное', 'Филе индейки', 'Филе минтая', 'Молоко 3.2%', 'Мука пшеничная в/с', 'Томаты свежие', 'Лук репчатый'];
     state.ccp = [

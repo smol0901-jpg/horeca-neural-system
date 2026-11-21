@@ -1,6 +1,6 @@
 {
-  "version": "1.7",
-  "build": "2026-11-20",
+  "version": "1.8",
+  "build": "2026-11-21",
   "channel": "demo",
-  "feature": "law status 20.11.2026 + ready-meals draft SanPiN note + J-READY in demo"
+  "feature": "law status 21.11.2026 + GOST Russian cuisine note + ready-meals portioning temp"
 }

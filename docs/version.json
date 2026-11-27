@@ -1,6 +1,6 @@
 {
-  "version": "1.12",
-  "build": "2026-11-25",
+  "version": "1.14",
+  "build": "2026-11-27",
   "channel": "demo",
-  "feature": "law status 25.11.2026 + confirmed no new SanPiN/Rospotrebnadzor changes + ready-meals draft still open until 10.12.2026"
+  "feature": "law status 27.11.2026 + confirmed no new SanPiN/Rospotrebnadzor changes + ready-meals draft still open until 10.12.2026 + GOST R 72957-2026 recommendatory"
 }
